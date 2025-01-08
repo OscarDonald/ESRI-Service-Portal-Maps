@@ -7,13 +7,13 @@
     var basemapEnum = "ArcGIS:Navigation";
 
     // This is the center of the map 
-    var myTownCenterLat = 34.0195;
-    var myTownCenterLong = -118.4912;
+    var myTownCenterLat = 11.973194;
+    var myTownCenterLong = 57.70875;
 
     // Inital map setup																																							
     var map = L.map("map", {
         minZoom: 10
-    }).setView([myTownCenterLat, myTownCenterLong], 14);
+    }).setView([myTownCenterLat, myTownCenterLong], 15);
 
     // Sets up the vector so we can click on it																					
     L.esri.Vector.vectorBasemapLayer(basemapEnum, {
@@ -124,14 +124,14 @@
         <sys_created_by>admin</sys_created_by>
         <sys_created_on>2023-10-23 18:44:35</sys_created_on>
         <sys_id>049db6fdc3ca79501edc78f9d0013109</sys_id>
-        <sys_mod_count>97</sys_mod_count>
+        <sys_mod_count>99</sys_mod_count>
         <sys_name>ESRI Leaflet</sys_name>
         <sys_package display_value="ESRI Service Portal Maps" source="x_snc_esri_service">9ecaf279c3ca79501edc78f9d00131d0</sys_package>
         <sys_policy/>
         <sys_scope display_value="ESRI Service Portal Maps">9ecaf279c3ca79501edc78f9d00131d0</sys_scope>
         <sys_update_name>sp_widget_049db6fdc3ca79501edc78f9d0013109</sys_update_name>
-        <sys_updated_by>jspirko</sys_updated_by>
-        <sys_updated_on>2023-11-04 18:33:00</sys_updated_on>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-01-08 08:25:34</sys_updated_on>
         <template><![CDATA[<div id="map"></div>]]></template>
     </sp_widget>
 </record_update>

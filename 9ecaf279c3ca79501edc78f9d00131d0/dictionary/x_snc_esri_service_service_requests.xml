@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element db_object_id="5a316adc830b5210574af1d6feaad397" label="Service Requests" max_length="40" name="x_snc_esri_service_service_requests" type="collection">
+        <element label="Street" max_length="50" name="street" type="string"/>
+    </element>
+</database>

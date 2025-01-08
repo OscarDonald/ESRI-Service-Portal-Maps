@@ -3,104 +3,109 @@
         <category>custom</category>
         <client_script><![CDATA[function initializeMap($scope) {
     AddArcGISLibrary();
-    var c = this;
 
-    setTimeout(function() {
-        require(["esri/config", "esri/Map", "esri/views/MapView", "esri/rest/locator", "esri/widgets/Zoom", "esri/widgets/Search"],
-            function(esriConfig, Map, MapView, locator, Zoom, Search) {
+    setTimeout(function () {
+        require([
+            "esri/config", 
+            "esri/Map", 
+            "esri/views/MapView", 
+            "esri/rest/locator", 
+            "esri/widgets/Search"
+        ], function (esriConfig, Map, MapView, locator, Search) {
 
-                esriConfig.apiKey = c.data.apiKey;
+            esriConfig.apiKey = "AAPK74b3e60240414d7b9aaf1ba3f81a3d1clLAHlH34bYupu93vPHgYO6_bTV3QcpD4BnGUgWgQJxFwnFfQtZJU5hiyNft4CfL8";
 
-                var map = new Map({
-									//https://www.arcgis.com/home/group.html?id=702026e41f6641fb85da88efe79dc166#overview
-                    //basemap: "arcgis-navigation"
-									  basemap: "arcgis-streets"
-                });
-                var view = new MapView({
-                    container: "viewDiv",
-                    map: map,
-                    zoom: 14,
-                    center: [-117.63321, 33.61281]
-
-                });
-
-                view.ui.move(["zoom"], "bottom-right");
-
-                view.on("click", function(evt) {
-                    search.searchTerm = "";
-                    setMark(evt.mapPoint);
-                    //alert(evt.mapPoint.x);
-                });
-
-                var search = new Search({ //Add Search widget
-                    view: view,
-                    resultGraphicEnabled: false,
-                    popupEnabled: false
-                });
-                search.on("search-complete", function(event) {
-                    setMark(event.results[0].results[0].feature.geometry);
-                });
-                view.ui.add(search, "top-left"); //Add to the map
-
-
-                function setMark(geometryPoint) {
-                    var serviceUrl = "http://geocode-api.arcgis.com/arcgis/rest/services/World/GeocodeServer";
-
-                    var params = {
-                        "location": geometryPoint
-                    };
-
-                    locator.locationToAddress(serviceUrl, params).then(
-                        function(response) {
-                            // Show the address found
-                            //alert(response.attributes.Region);
-                            view.openPopup({
-                                title: response.attributes.LongLabel,
-                                location: geometryPoint
-                            });
-													
-                            //This centers the map on the click point and zooms in to 18
-                            view.goTo({
-															  center: geometryPoint, 
-																zoom: 18
-														});
-
-                            $scope.page.g_form.setValue("u_latitude", response.location.y);
-                            $scope.page.g_form.setValue("u_longitude", response.location.x);
-                            $scope.page.g_form.setValue("u_street", response.attributes.ShortLabel);
-                            $scope.page.g_form.setValue("u_city", response.attributes.City);
-                            $scope.page.g_form.setValue("u_region", response.attributes.Region);
-                            $scope.page.g_form.setValue("u_zipcode", response.attributes.Postal)
-
-                        },
-                        function(err) {
-                            // Show no address found
-                            showAddress("No address found.", geometryPoint);
-                        }
-                    );
-
-                }
-
+            // Skapa kartan med en basemap
+            var map = new Map({
+                basemap: "arcgis-navigation" // Alternativ: "arcgis-imagery", "arcgis-streets"
             });
+
+            // Skapa en vy för kartan
+            var view = new MapView({
+                container: "viewDiv", // HTML-elementets ID där kartan ska visas
+                map: map,
+                zoom: 15,
+                center: [11.973194, 57.70875] // Koordinater för Göteborg
+            });
+						
+						// Placerar Zoom knapparna i nedre högra hörnet.
+						view.ui.move(["zoom"], "bottom-right");
+
+            // Lägg till en sökwidget
+            var search = new Search({
+                view: view,
+                popupEnabled: false, // Stäng av popup om det inte behövs
+                resultGraphicEnabled: false
+            });
+            view.ui.add(search, "top-left");
+
+            // Klickhändelse på kartan
+            view.on("click", function (event) {
+                setMark(event.mapPoint);
+            });
+
+            // Funktion för att sätta markering och visa adress
+            function setMark(geometryPoint) {
+                var serviceUrl = "https://geocode-api.arcgis.com/arcgis/rest/services/World/GeocodeServer";
+
+                var params = {
+                    location: geometryPoint
+                };
+
+                locator.locationToAddress(serviceUrl, params).then(
+                    function (response) {
+                        view.popup.open({
+                            title: response.attributes.LongLabel,
+                            location: geometryPoint
+                        });
+
+                        view.goTo({
+                            center: geometryPoint,
+                            zoom: 18
+                        });
+
+                        // Uppdatera formulärfält via $scope
+                        $scope.page.g_form.setValue("u_latitude", response.location.y);
+                        $scope.page.g_form.setValue("u_longitude", response.location.x);
+                        $scope.page.g_form.setValue("u_street", response.attributes.ShortLabel);
+                        $scope.page.g_form.setValue("u_city", response.attributes.City);
+                        $scope.page.g_form.setValue("u_region", response.attributes.Region);
+                        $scope.page.g_form.setValue("u_zipcode", response.attributes.Postal);
+                    },
+                    function () {
+                        view.popup.open({
+                            title: "Ingen adress hittades",
+                            location: geometryPoint
+                        });
+                    }
+                );
+            }
+        });
     }, 2000);
 }
 
 function AddArcGISLibrary() {
     var arcGISLib = document.createElement('script');
-    arcGISLib.setAttribute('src', 'https://js.arcgis.com/4.27');
+    arcGISLib.setAttribute('src', 'https://js.arcgis.com/4.31');
     document.head.appendChild(arcGISLib);
-}]]></client_script>
+}
+]]></client_script>
         <controller_as>c</controller_as>
-        <css>#viewDiv {
+        <css>/* Styla kartvycontainer */
+#viewDiv {
   height: 100%;
   width: 100%;
-  min-height: 350px;
-  min-width: 300px;
+  min-height: 450px;
+  min-width: 400px;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 14px;
   color: #323232;
+}
 
-}</css>
+  .esri-popup__main-container {
+  	padding: 10px !important;
+  }
+</css>
         <data_table>sp_instance</data_table>
         <demo_data/>
         <description/>
@@ -125,14 +130,14 @@ function AddArcGISLibrary() {
         <sys_created_by>jspirko</sys_created_by>
         <sys_created_on>2023-10-24 05:32:45</sys_created_on>
         <sys_id>e20399c6c30ab9501edc78f9d00131d1</sys_id>
-        <sys_mod_count>138</sys_mod_count>
+        <sys_mod_count>218</sys_mod_count>
         <sys_name>ESRI JS API</sys_name>
         <sys_package display_value="ESRI Service Portal Maps" source="x_snc_esri_service">9ecaf279c3ca79501edc78f9d00131d0</sys_package>
         <sys_policy/>
         <sys_scope display_value="ESRI Service Portal Maps">9ecaf279c3ca79501edc78f9d00131d0</sys_scope>
         <sys_update_name>sp_widget_e20399c6c30ab9501edc78f9d00131d1</sys_update_name>
-        <sys_updated_by>jspirko</sys_updated_by>
-        <sys_updated_on>2023-11-05 21:06:08</sys_updated_on>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2025-01-08 10:02:05</sys_updated_on>
         <template><![CDATA[<link rel="stylesheet" href="https://js.arcgis.com/4.27/esri/themes/light/main.css" />
 <div id="viewDiv"></div>]]></template>
     </sp_widget>
