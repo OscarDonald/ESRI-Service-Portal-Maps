@@ -133,23 +133,15 @@ function AddArcGISLibrary() {
         <sys_created_by>jspirko</sys_created_by>
         <sys_created_on>2023-10-24 05:32:45</sys_created_on>
         <sys_id>e20399c6c30ab9501edc78f9d00131d1</sys_id>
-        <sys_mod_count>226</sys_mod_count>
+        <sys_mod_count>229</sys_mod_count>
         <sys_name>ESRI JS API</sys_name>
         <sys_package display_value="ESRI Service Portal Maps" source="x_snc_esri_service">9ecaf279c3ca79501edc78f9d00131d0</sys_package>
         <sys_policy/>
         <sys_scope display_value="ESRI Service Portal Maps">9ecaf279c3ca79501edc78f9d00131d0</sys_scope>
         <sys_update_name>sp_widget_e20399c6c30ab9501edc78f9d00131d1</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2025-01-08 14:27:35</sys_updated_on>
+        <sys_updated_on>2025-01-08 14:32:47</sys_updated_on>
         <template><![CDATA[<link rel="stylesheet" href="https://js.arcgis.com/4.27/esri/themes/light/main.css" />
-<div id="viewDiv">
-<iframe 
-    width="600" 
-    height="450" 
-    style="border:0" 
-    src="https://www.google.com/maps?q=57.70875,11.973194&output=embed" 
-    allowfullscreen>
-</iframe>
-</div>]]></template>
+<div id="viewDiv"></div>]]></template>
     </sp_widget>
 </record_update>
