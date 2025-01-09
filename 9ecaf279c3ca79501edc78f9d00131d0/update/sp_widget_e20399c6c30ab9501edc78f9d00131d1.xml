@@ -64,10 +64,21 @@
                             zoom: 18
                         });
 											
-												var mapUrl = "https://www.google.com/maps?q=" + geometryPoint.latitude + "," + geometryPoint.longitude;
+											// Generera iframe
+            					var iframeStr = 
+                					'<iframe ' +
+                					'width="600" ' +
+                					'height="450" ' +
+                					'style="border:0" ' +
+                					'src="https://www.google.com/maps?q=' + geometryPoint.latitude + ',' + geometryPoint.longitude + '&output=embed" ' +
+                					'allowfullscreen>' +
+                				'</iframe>';
+											
+												// var mapUrl = "https://www.google.com/maps?q=" + geometryPoint.latitude + "," + geometryPoint.longitude;
 
                         // Uppdatera formulärfält via $scope
-												$scope.page.g_form.setValue("u_map_url", mapUrl);
+												//$scope.page.g_form.setValue("u_map_url", mapUrl);
+												$scope.page.g_form.setValue("u_iframe_map", iframeStr); // Skicka iframe till formuläret
                         $scope.page.g_form.setValue("u_latitude", response.location.y);
                         $scope.page.g_form.setValue("u_longitude", response.location.x);
                         $scope.page.g_form.setValue("u_street", response.attributes.ShortLabel);
@@ -88,9 +99,11 @@
 }
 
 function AddArcGISLibrary() {
-    var arcGISLib = document.createElement('script');
-    arcGISLib.setAttribute('src', 'https://js.arcgis.com/4.31');
-    document.head.appendChild(arcGISLib);
+    if (!document.querySelector('script[src="https://js.arcgis.com/4.31"]')) {
+        var arcGISLib = document.createElement('script');
+        arcGISLib.setAttribute('src', 'https://js.arcgis.com/4.31');
+        document.head.appendChild(arcGISLib);
+    }
 }
 ]]></client_script>
         <controller_as>c</controller_as>
@@ -133,14 +146,14 @@ function AddArcGISLibrary() {
         <sys_created_by>jspirko</sys_created_by>
         <sys_created_on>2023-10-24 05:32:45</sys_created_on>
         <sys_id>e20399c6c30ab9501edc78f9d00131d1</sys_id>
-        <sys_mod_count>229</sys_mod_count>
+        <sys_mod_count>235</sys_mod_count>
         <sys_name>ESRI JS API</sys_name>
         <sys_package display_value="ESRI Service Portal Maps" source="x_snc_esri_service">9ecaf279c3ca79501edc78f9d00131d0</sys_package>
         <sys_policy/>
         <sys_scope display_value="ESRI Service Portal Maps">9ecaf279c3ca79501edc78f9d00131d0</sys_scope>
         <sys_update_name>sp_widget_e20399c6c30ab9501edc78f9d00131d1</sys_update_name>
         <sys_updated_by>admin</sys_updated_by>
-        <sys_updated_on>2025-01-08 14:32:47</sys_updated_on>
+        <sys_updated_on>2025-01-09 10:19:06</sys_updated_on>
         <template><![CDATA[<link rel="stylesheet" href="https://js.arcgis.com/4.27/esri/themes/light/main.css" />
 <div id="viewDiv"></div>]]></template>
     </sp_widget>
